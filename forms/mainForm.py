@@ -19,9 +19,13 @@ import PySimpleGUI as sg
 
 
 class MainForm():
-    def __init__(self,handler):
+    def __init__(self,handler,settings):
+        #Математика приложения
         self.handler = handler
         #Переменные, с которыми будет работать форма
+        self.settings = settings
+
+
         self.number_of_blades = None
         self.T_thickness = [None, None] # Допуск на толщину
         self.T_angle = [None, None] # Допуск на угол
@@ -84,99 +88,127 @@ class MainForm():
 
             if event == 'Загрузить номинальные значения':
                 window.FindElement('_output_').Update('')
-                # window['_output_'].TKOut.output.config(wrap='word')  # set Output element word wrapping
-                self.filedb = os.path.basename(values['-databasename-'])
-                if len(self.filedb)==0:
+                self.settings.SetValue(self.settings.filedb_name, os.path.basename(values['-databasename-']))
+                if len(self.settings.GetValue(self.settings.filedb_name))==0:
                     sg.PopupAnnoying('Не указана или отсутствует база данных')  # Просто запускает окно
                     continue
-                parameters = LoadNominalsCommandHandlerParameter(self.filedb, 'nominal')
-                window['_output_'].print('Load from database: ' + self.filedb)
+                parameters = LoadNominalsCommandHandlerParameter(self.settings.GetValue(self.settings.filedb_name), 'nominal')
+                window['_output_'].print('Load from database: ' + self.settings.GetValue(self.settings.filedb_name))
                 result_request = self.handler.initFunction(0, parameters)
                 #Сохранение переменных формы
-                self.T_thickness[0], self.T_thickness[1] = result_request[0]['T_thickness_lower'], \
-                                                           result_request[0]['T_thickness_upper']
-                self.T_angle[0], self.T_angle[1]  = result_request[0]['T_angle_lower'], \
-                                                           result_request[0]['T_angle_upper']
+                self.settings.SetValue(self.settings.T_thickness_name, [result_request[0]['T_thickness_lower'],
+                                                                                  result_request[0]['T_thickness_upper']])
+                self.settings.SetValue(self.settings.T_angle_name, [result_request[0]['T_angle_lower'],
+                                                                        result_request[0]['T_angle_upper']])
 
-                self.thickness = result_request[0]['thickness'] # Номинальное значение толщины, обеспечивающее натяг
-                self.thickness_T = result_request[0]['thickness_T']  # толщина до точки вращения со стороны корыта
-                self.thickness_B = result_request[0]['thickness_B']  # толщина до точки вращения со стороны спинки
-                self.thickness_T_nom = result_request[0]['thickness_T_nom']
-                self.thickness_B_nom = result_request[0]['thickness_B_nom']
-                self.angle = result_request[0]['angle']  # Угол антивибрационной полки
+                self.settings.SetValue(self.settings.thickness_name, result_request[0]['thickness']) # Номинальное значение толщины, обеспечивающее натяг
+                self.settings.SetValue(self.settings.thickness_T_name, result_request[0]['thickness_T']) # толщина до точки вращения со стороны корыта
+                self.settings.SetValue(self.settings.thickness_B_name, result_request[0]['thickness_B']) # толщина до точки вращения со стороны спинки
+                self.settings.SetValue(self.settings.thickness_T_nom_name, result_request[0]['thickness_T_nom'])
+                self.settings.SetValue(self.settings.thickness_B_nom_name, result_request[0]['thickness_B_nom'])
+                self.settings.SetValue(self.settings.angle_name, result_request[0]['angle']) # Угол антивибрационной полки
 
                 # Толщина полки со стороны корыта
-                self.shelf_width_T = result_request[0]['shelf_width_T']
-                self.shelf_width_half_T = result_request[0]['shelf_width_half_T']  #
-                self.T_shelf_width_half_T[0], self.T_shelf_width_half_T[1] = \
-                    result_request[0]['T_shelf_width_half_T_lower'], result_request[0]['T_shelf_width_half_T_upper']  #
+                self.settings.SetValue(self.settings.shelf_width_T_name, result_request[0]['shelf_width_T'])
+                self.settings.SetValue(self.settings.shelf_width_half_T_name, result_request[0]['shelf_width_half_T'])
+                self.settings.SetValue(self.settings.T_shelf_width_half_T_name, [result_request[0]['T_shelf_width_half_T_lower'],
+                                                                        result_request[0]['T_shelf_width_half_T_upper']])
 
                 # Толщина полки со стороны спинки
-                self.shelf_width_B = result_request[0]['shelf_width_B']
-                self.shelf_width_half_B = result_request[0]['shelf_width_half_B']  #
-                self.T_shelf_width_half_B[0], self.T_shelf_width_half_B[1] = \
-                    result_request[0]['T_shelf_width_half_B_lower'], result_request[0]['T_shelf_width_half_B_upper']  #
+                self.settings.SetValue(self.settings.shelf_width_B_name, result_request[0]['shelf_width_B'])
+                self.settings.SetValue(self.settings.shelf_width_half_B_name, result_request[0]['shelf_width_half_B'])
+                self.settings.SetValue(self.settings.T_shelf_width_half_B_name,
+                                       [result_request[0]['T_shelf_width_half_B_lower'],
+                                        result_request[0]['T_shelf_width_half_B_upper']])
 
                 # Угол и расстояния для срезов лопаток
-                self.angle_slice = result_request[0]['angle_slice']
-                self.slice_B = result_request[0]['slice_B']  # со стороны спинки
-                self.slice_T = result_request[0]['slice_T']  # со стороны корыта
+                self.settings.SetValue(self.settings.angle_slice_name, result_request[0]['angle_slice'])
+                self.settings.SetValue(self.settings.slice_B_name, result_request[0]['slice_B'])# со стороны спинки
+                self.settings.SetValue(self.settings.slice_T_name, result_request[0]['slice_T'])# со стороны корыта
 
                 window['_output_'].print('Parameters: ' + str(result_request))
 
             if event == 'Вычислить номинальные параметры':
-                if self.thickness==None:
+                if self.settings.GetValue(self.settings.thickness_name)==None:
                     sg.PopupAnnoying('Не загружены значения допусков')  # Просто запускает окно
                     continue
-                parameters = CalculationNominalscommandHandlerParameter(self.thickness_B, self.angle, self.thickness_B_nom,
-                                                                 self.shelf_width_B, self.shelf_width_half_B, self.slice_B,
-                                                                 self.angle_slice, self.thickness_T, self.thickness_T_nom,
-                                                                 self.shelf_width_T, self.shelf_width_half_T, self.slice_T)
+                parameters = CalculationNominalscommandHandlerParameter(self.settings.GetValue(self.settings.thickness_B_name),
+                            self.settings.GetValue(self.settings.angle_name), self.settings.GetValue(self.settings.thickness_B_nom_name),
+                                                                        self.settings.GetValue(
+                                                                            self.settings.shelf_width_B_name),
+                                                                        self.settings.GetValue(
+                                                                            self.settings.shelf_width_half_B_name),
+                                                                        self.settings.GetValue(
+                                                                            self.settings.slice_B_name),
+                                                                        self.settings.GetValue(
+                                                                            self.settings.angle_slice_name),
+                                                                        self.settings.GetValue(
+                                                                            self.settings.thickness_T_name),
+                                                                        self.settings.GetValue(
+                                                                            self.settings.thickness_T_nom_name),
+                                                                        self.settings.GetValue(
+                                                                            self.settings.shelf_width_T_name),
+                                                                        self.settings.GetValue(
+                                                                            self.settings.shelf_width_half_T_name),
+                                                                        self.settings.GetValue(
+                                                                            self.settings.slice_T_name))
                 result_request = self.handler.initFunction(3, parameters)
 
             if event == 'Генерация измерений':
-                self.filedb = os.path.basename(values['-databasename-'])
-                if len(self.filedb)==0:
+                self.settings.SetValue(self.settings.filedb_name, os.path.basename(values['-databasename-']))
+                if len(self.settings.GetValue(self.settings.filedb_name)) == 0:
                     sg.PopupAnnoying('Не указана или отсутствует база данных')  # Просто запускает окно
                     continue
-                self.number_of_blades = int(values['-numberblades-'])
-                if (self.T_thickness[0]==None):
+
+                self.settings.SetValue(self.settings.number_of_blades_name, int(values['-numberblades-']))
+                #self.number_of_blades = int(values['-numberblades-'])
+                if (self.settings.GetValue(self.settings.shelf_width_B_name)==None):
                     sg.PopupAnnoying('Не загружены значения допусков')  # Просто запускает окно
                     continue
-                self.delta_thickness = np.random.normal((self.T_thickness[1]+self.T_thickness[0])/2,
-                                                   (self.T_thickness[1]-self.T_thickness[0])/6, size = self.number_of_blades)
-                self.delta_angle = np.random.normal((self.T_angle[1] + self.T_angle[0])/2,
-                                                   (self.T_angle[1] - self.T_angle[0])/6, size = self.number_of_blades)
-                parameters = GenerateMeasureCommandHandlerParameter(self.filedb, 'measure', self.delta_thickness, self.delta_angle)
+                T_thickness = self.settings.GetValue(self.settings.T_thickness_name)
+                self.settings.SetValue(self.settings.delta_thickness_name, np.random.normal((T_thickness[1]+T_thickness[0])/2,
+                                                   (T_thickness[1]-T_thickness[0])/6, size = self.settings.GetValue(self.settings.number_of_blades_name)))
+                T_angle_name = self.settings.GetValue(self.settings.T_angle_name)
+                self.settings.SetValue(self.settings.delta_angle_name, np.random.normal((T_angle_name[1] + T_angle_name[0])/2,
+                                                   (T_angle_name[1] - T_angle_name[0])/6, size = self.settings.GetValue(self.settings.number_of_blades_name)))
+
+                parameters = GenerateMeasureCommandHandlerParameter(self.settings.GetValue(self.settings.filedb_name),
+                                                                    'measure',
+                                                                    self.settings.GetValue(self.settings.delta_thickness_name),
+                                                                    self.settings.GetValue(self.settings.delta_angle_name))
                 result_request = self.handler.initFunction(1, parameters)
                 window.FindElement('_output2_').Update('')
                 window['_output2_']. print('You entered ', result_request)
 
             if event == 'Загрузить измерения':
                 window.FindElement('_output_').Update('')
-                self.filedb = os.path.basename(values['-databasename-'])
-                if len(self.filedb)==0:
+                self.settings.SetValue(self.settings.filedb_name, os.path.basename(values['-databasename-']))
+                if len(self.settings.GetValue(self.settings.filedb_name)) == 0:
                     sg.PopupAnnoying('Не указана или отсутствует база данных')  # Просто запускает окно
                     continue
-                parameters = LoadMeasureCommandHandlerParameter(self.filedb,'measure')
-                window['_output2_'].print('Load from database: ' + self.filedb)
+                parameters = LoadMeasureCommandHandlerParameter(self.settings.GetValue(self.settings.filedb_name),
+                                                                'measure')
+                window['_output2_'].print('Load from database: ' + self.settings.GetValue(self.settings.filedb_name))
                 result_request = self.handler.initFunction(2, parameters)
                 window.FindElement('_output2_').Update('')
                 window['_output2_'].print('Parameters: ' + str(result_request))
                 #Вывод всплывающего окна и выход из запроса
                 number_of_blades_dict = result_request.pop()
-                self.number_of_blades = number_of_blades_dict[0]['Количество']
-                window.FindElement('-numberblades-').Update(str(self.number_of_blades))
-                if self.number_of_blades==0 or self.number_of_blades==None:
+                self.settings.SetValue(self.settings.number_of_blades_name, number_of_blades_dict[0]['Количество'])
+                window.FindElement('-numberblades-').Update(str(self.settings.GetValue(self.settings.number_of_blades_name)))
+                if self.settings.GetValue(self.settings.number_of_blades_name)==0 or self.settings.GetValue(self.settings.number_of_blades_name)==None:
                     sg.PopupAnnoying('Нет данных по измеренным отклонениям')  # Просто запускает окно
                     continue
                 #Сохранение отклонений
-                self.delta_thickness = np.zeros(self.number_of_blades)
-                self.delta_angle = np.zeros(self.number_of_blades)
-                for i in range (self.number_of_blades):
+                delta_thickness = np.zeros(self.settings.GetValue(self.settings.number_of_blades_name))
+                delta_angle = np.zeros(self.settings.GetValue(self.settings.number_of_blades_name))
+                for i in range (self.settings.GetValue(self.settings.number_of_blades_name)):
                     deviation_dict = result_request.pop(0)
-                    self.delta_thickness[i] = deviation_dict['delta_thickness']
-                    self.delta_angle[i] = deviation_dict['delta_angle']
+                    delta_thickness[i] = deviation_dict['delta_thickness']
+                    delta_angle[i] = deviation_dict['delta_angle']
+
+                self.settings.SetValue(self.settings.delta_thickness_name, delta_thickness)
+                self.settings.SetValue(self.settings.delta_angle_name, delta_angle)
         window.close()
 
     def powerplot(self,base, exponent):
