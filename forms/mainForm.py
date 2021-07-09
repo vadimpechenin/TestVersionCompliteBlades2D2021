@@ -5,6 +5,7 @@ from handlers.loadNominals.loadNominalsCommandHandlerParameter import LoadNomina
 from handlers.generateMeasure.generateMeasureCommandHandlerParameter import GenerateMeasureCommandHandlerParameter
 from handlers.loadMeasure.loadMeasureCommandHandlerParameter import LoadMeasureCommandHandlerParameter
 from handlers.calculationNominals.calculationNominalsСommandHandlerParameter import CalculationNominalscommandHandlerParameter
+from handlers.plotNominals.plotNominalsCommandHandlerParameter import PlotNominalsCommandHandlerParameter
 
 from forms.mplgraph import MPLgraph
 import os
@@ -63,7 +64,7 @@ class MainForm():
             [sg.Canvas(size=(figure_w, figure_h), key='-CANVAS-'),
              sg.Canvas(size=(figure_w, figure_h), key='-CANVAS2-')],
             [sg.Multiline(size=(40, 10), key = '_output_'), sg.Multiline(size=(40, 10), key = '_output2_')],
-            [sg.Submit(), sg.Exit(), sg.Button('Загрузить номинальные значения'), sg.Button('Вычислить номинальные параметры'), sg.Button('Загрузить измерения'), sg.Button('Генерация измерений')],#, sg.Output
+            [sg.Submit(), sg.Exit(), sg.Button('Загрузить номинальные значения'), sg.Button('Вычислить номинальные параметры'), sg.Button('Загрузить измерения'), sg.Button('Генерация измерений'), sg.Button('2D Прорисовка')],#, sg.Output
             [sg.Input(key='-databasename-'), sg.FileBrowse()]
         ]
         window = sg.Window('MVC Test', layout, grab_anywhere=True, finalize=True)
@@ -152,7 +153,15 @@ class MainForm():
                                                                             self.settings.shelf_width_half_T_name),
                                                                         self.settings.GetValue(
                                                                             self.settings.slice_T_name))
-                result_request = self.handler.initFunction(3, parameters)
+                pointsBackThroughParams = self.handler.initFunction(3, parameters)
+                self.settings.SetValue(self.settings.pointsBackThroughParams_name, pointsBackThroughParams)
+
+            if event == '2D Прорисовка':
+                if self.settings.GetValue(self.settings.pointsBackThroughParams_name) == None:
+                    sg.PopupAnnoying('Не рассчитаны производные параметры')  # Просто запускает окно
+                    continue
+                parameters = PlotNominalsCommandHandlerParameter(self.settings.GetValue(self.settings.pointsBackThroughParams_name))
+                self.handler.initFunction(4, parameters)
 
             if event == 'Генерация измерений':
                 self.settings.SetValue(self.settings.filedb_name, os.path.basename(values['-databasename-']))

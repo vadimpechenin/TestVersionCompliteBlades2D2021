@@ -3,6 +3,7 @@ from handlers.baseCommandHandler import BaseCommandHandler
 from .pointsBackParameter import PointsBackParameter
 from .pointsTroughParameter import PointsThroughParameter
 from .allCalculatonNomParameter import AllCalculationNomParameter
+from .pointsForSquare import PointsForSquare
 
 import numpy as np
 
@@ -17,9 +18,42 @@ class CalculationNominalscommandHandler(BaseCommandHandler):
         pointsBackParams = self.function_poisk_points_back_2D(parameters)
         # Со стороны корыта
         pointsTroughParams = self.function_poisk_points_trough_2D(parameters)
-        ciphers = AllCalculationNomParameter(pointsBackParams,pointsTroughParams)
+        # Расчет площадей
+        params = PointsForSquare(pointsBackParams.Point_1_B, pointsBackParams.Point_2_B,
+                                 pointsBackParams.Point_3_B, pointsBackParams.Point_4_B)
+        Square_B_nom = self.square_calculate(params)
+        params = PointsForSquare(pointsTroughParams.Point_1_T, pointsTroughParams.Point_2_T,
+                                 pointsTroughParams.Point_3_T, pointsTroughParams.Point_4_T)
+        Square_T_nom = self.square_calculate(params)
+        params = PointsForSquare(pointsBackParams.Point_3_B, pointsBackParams.Point_4_B,
+                                 pointsBackParams.Point_01_B, pointsBackParams.Point_02_B)
+        Square_B_nom0 = self.square_calculate(params)
+        params = PointsForSquare(pointsTroughParams.Point_3_T, pointsTroughParams.Point_4_T,
+                                 pointsTroughParams.Point_01_T, pointsTroughParams.Point_02_T)
+        Square_T_nom0 = self.square_calculate(params)
+        #Номинальное превышение для расчета номинальных площадей натяга
+        gap_Squre_B_nom = Square_B_nom-Square_B_nom0
+        gap_Squre_T_nom = Square_T_nom-Square_T_nom0
+
+        ciphers = AllCalculationNomParameter(pointsBackParams, pointsTroughParams, gap_Squre_B_nom, gap_Squre_T_nom)
         #Наборы точек для смещения и разворота
         return ciphers
+
+    def square_calculate(self,parameters):
+        # Формула расчета площади  произвольного четырехугольника, информации о его вершинах
+        d1 = np.sqrt((parameters.P[0][0] - parameters.P[2][0])**2 + (parameters.P[0][1] - parameters.P[2][1]) ** 2)
+        d2 = np.sqrt((parameters.P[1, 0] - parameters.P[3, 0]) ** 2 + (parameters.P[1, 1] - parameters.P[3, 1]) **2)
+
+        k1 = (parameters.P[0, 1] - parameters.P[2, 1]) / (parameters.P[0, 0] - parameters.P[2, 0])
+
+        k2 = (parameters.P[1, 1] - parameters.P[3, 1]) / (parameters.P[1, 0] - parameters.P[3, 0])
+
+
+        fi = np.arccos((k1 * k2 + 1) / (np.sqrt(k1 ** 2 + 1) * np.sqrt(k2 ** 2 + 1)))
+
+        Square_B_nom = d1 * d2 * np.sin(fi) / 2
+
+        return Square_B_nom
 
     def function_poisk_points_back_2D(self, parameters):
         # Поиск всей геометрии на спинке для решения задачи

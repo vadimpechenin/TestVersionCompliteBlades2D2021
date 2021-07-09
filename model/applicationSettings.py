@@ -25,6 +25,8 @@ class ApplicationSettings():
     slice_T_name = 'slice_T'
     # Название файда базы данных
     filedb_name = 'filedb'
+    # Производные параметры
+    pointsBackThroughParams_name = 'pointsBackThroughParams'
 
     values = {}
 
@@ -54,6 +56,7 @@ class ApplicationSettings():
         self.values[self.slice_B_name] = None
         self.values[self.slice_T_name] = None
         self.values[self.filedb_name] = ''
+        self.values[self.pointsBackThroughParams_name] = None
 
     def getNames(self):
         #Возвращает все названия параметров, необходимых для приложения

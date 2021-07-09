@@ -12,7 +12,7 @@ class MPLgraph(FigureCanvasTkAgg):
         """
         FigureCanvasTkAgg.__init__(self, figure, parent, **options)
         self.figure = figure
-        self.add = figure.add_subplot(111)
+        self.add = figure.add_subplot(1,1,1)
         # .show() was deprecated and changed to .draw(). See:
         # https://github.com/matplotlib/matplotlib/pull/9275
         self.draw()
