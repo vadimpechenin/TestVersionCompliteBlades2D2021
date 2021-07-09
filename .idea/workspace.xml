@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="a3ef2416-4adc-4746-9f37-10bbc9c4bc10" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/TestVersionInterfaceCompliteBlades2021.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/TestVersionInterfaceCompliteBlades2021.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/forms/mainForm.py" beforeDir="false" afterPath="$PROJECT_DIR$/forms/mainForm.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/handlers/calculationNominals/calculationNominalscommandHandler.py" beforeDir="false" afterPath="$PROJECT_DIR$/handlers/calculationNominals/calculationNominalsСommandHandler.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/handlers/calculationNominals/calculationNominalscommandHandlerParameter.py" beforeDir="false" afterPath="$PROJECT_DIR$/handlers/calculationNominals/calculationNominalsСommandHandlerParameter.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/handlers/calculationNominals/pointsTroughParameter.py" beforeDir="false" afterPath="$PROJECT_DIR$/handlers/calculationNominals/pointsTroughParameter.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/handlers/mainHandler.py" beforeDir="false" afterPath="$PROJECT_DIR$/handlers/mainHandler.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1v00cdP8c8rbq32F2qWTw2Cagit" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\PYTHON\Programms\CompleteSetOfBlades2021\TestVersionInterfaceCompliteBlades2021\handlers\generateMeasure" />
+      <recent name="D:\PYTHON\Programms\CompleteSetOfBlades2021\TestVersionInterfaceCompliteBlades2021" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="main" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="TestVersionInterfaceCompliteBlades2021" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="C:\Users\User\Anaconda3\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/application" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/application/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="a3ef2416-4adc-4746-9f37-10bbc9c4bc10" name="Default Changelist" comment="" />
+      <created>1625572132167</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1625572132167</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="634" y="95" key="FileChooserDialogImpl" timestamp="1625685543572">
+      <screen x="0" y="0" width="1707" height="680" />
+    </state>
+    <state x="634" y="95" key="FileChooserDialogImpl/0.0.1707.680@0.0.1707.680" timestamp="1625685543572" />
+    <state width="1001" height="329" key="GridCell.Tab.0.bottom" timestamp="1625776020547">
+      <screen x="0" y="0" width="2048" height="824" />
+    </state>
+    <state width="1685" height="98" key="GridCell.Tab.0.bottom/0.0.1707.680@0.0.1707.680" timestamp="1625685694951" />
+    <state width="1001" height="329" key="GridCell.Tab.0.bottom/0.0.2048.824@0.0.2048.824" timestamp="1625776020547" />
+    <state width="1001" height="329" key="GridCell.Tab.0.center" timestamp="1625776020547">
+      <screen x="0" y="0" width="2048" height="824" />
+    </state>
+    <state width="1685" height="98" key="GridCell.Tab.0.center/0.0.1707.680@0.0.1707.680" timestamp="1625685694950" />
+    <state width="1001" height="329" key="GridCell.Tab.0.center/0.0.2048.824@0.0.2048.824" timestamp="1625776020547" />
+    <state width="1001" height="329" key="GridCell.Tab.0.left" timestamp="1625776020547">
+      <screen x="0" y="0" width="2048" height="824" />
+    </state>
+    <state width="1685" height="98" key="GridCell.Tab.0.left/0.0.1707.680@0.0.1707.680" timestamp="1625685694950" />
+    <state width="1001" height="329" key="GridCell.Tab.0.left/0.0.2048.824@0.0.2048.824" timestamp="1625776020547" />
+    <state width="1001" height="329" key="GridCell.Tab.0.right" timestamp="1625776020547">
+      <screen x="0" y="0" width="2048" height="824" />
+    </state>
+    <state width="1685" height="98" key="GridCell.Tab.0.right/0.0.1707.680@0.0.1707.680" timestamp="1625685694951" />
+    <state width="1001" height="329" key="GridCell.Tab.0.right/0.0.2048.824@0.0.2048.824" timestamp="1625776020547" />
+    <state width="1001" height="329" key="GridCell.Tab.1.bottom" timestamp="1625776020247">
+      <screen x="0" y="0" width="2048" height="824" />
+    </state>
+    <state width="1685" height="98" key="GridCell.Tab.1.bottom/0.0.1707.680@0.0.1707.680" timestamp="1625685694671" />
+    <state width="1001" height="329" key="GridCell.Tab.1.bottom/0.0.2048.824@0.0.2048.824" timestamp="1625776020247" />
+    <state width="1001" height="329" key="GridCell.Tab.1.center" timestamp="1625776020247">
+      <screen x="0" y="0" width="2048" height="824" />
+    </state>
+    <state width="1685" height="98" key="GridCell.Tab.1.center/0.0.1707.680@0.0.1707.680" timestamp="1625685694671" />
+    <state width="1001" height="329" key="GridCell.Tab.1.center/0.0.2048.824@0.0.2048.824" timestamp="1625776020247" />
+    <state width="1001" height="329" key="GridCell.Tab.1.left" timestamp="1625776020247">
+      <screen x="0" y="0" width="2048" height="824" />
+    </state>
+    <state width="1685" height="98" key="GridCell.Tab.1.left/0.0.1707.680@0.0.1707.680" timestamp="1625685694671" />
+    <state width="1001" height="329" key="GridCell.Tab.1.left/0.0.2048.824@0.0.2048.824" timestamp="1625776020247" />
+    <state width="1001" height="329" key="GridCell.Tab.1.right" timestamp="1625776020247">
+      <screen x="0" y="0" width="2048" height="824" />
+    </state>
+    <state width="1685" height="98" key="GridCell.Tab.1.right/0.0.1707.680@0.0.1707.680" timestamp="1625685694671" />
+    <state width="1001" height="329" key="GridCell.Tab.1.right/0.0.2048.824@0.0.2048.824" timestamp="1625776020247" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/handlers/calculationNominals/calculationNominalsСommandHandler.py</url>
+          <line>68</line>
+          <option name="timeStamp" value="29" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/handlers/calculationNominals/calculationNominalsСommandHandler.py</url>
+          <line>21</line>
+          <option name="timeStamp" value="31" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>
