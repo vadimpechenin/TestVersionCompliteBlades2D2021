@@ -25,47 +25,17 @@ class MainForm():
         self.handler = handler
         #Переменные, с которыми будет работать форма
         self.settings = settings
-
-
-        self.number_of_blades = None
-        self.T_thickness = [None, None] # Допуск на толщину
-        self.T_angle = [None, None] # Допуск на угол
-        self.delta_thickness = None
-        self.delta_angle = None
-
-        self.thickness = None  # Номинальное значение толщины, обеспечивающее натяг
-        self.thickness_T = None   # толщина до точки вращения со стороны корыта
-        self.thickness_B = None   # толщина до точки вращения со стороны спинки
-        self.thickness_T_nom = None
-        self.thickness_B_nom = None
-        self.angle = None # Угол антивибрационной полки
-
-        # Толщина полки со стороны корыта
-        self.shelf_width_T = None
-        self.shelf_width_half_T = None  #
-        self.T_shelf_width_half_T = [None, None]  #
-
-        # Толщина полки со стороны спинки
-        self.shelf_width_B = None
-        self.shelf_width_half_B = None  #
-        self.T_shelf_width_half_B = [None, None] #
-
-        # Угол и расстояния для срезов лопаток
-        self.angle_slice = None
-        self.slice_B = None # со стороны спинки
-        self.slice_T = None # со стороны корыта
-
-        self.filedb = ''
-
     def show(self):
-        figure_w, figure_h = 300, 300
+        figure_w, figure_h = 200, 200
         layout = [
             [sg.Text('Количество лопаток'), sg.InputText('84', key='-numberblades-'), sg.Text('exponent'), sg.InputText('1', key='-null-')],
             [sg.Canvas(size=(figure_w, figure_h), key='-CANVAS-'),
-             sg.Canvas(size=(figure_w, figure_h), key='-CANVAS2-')],
-            [sg.Multiline(size=(40, 10), key = '_output_'), sg.Multiline(size=(40, 10), key = '_output2_')],
+             sg.Canvas(size=(figure_w, figure_h), key='-CANVAS2-'),
+            sg.Canvas(size=(figure_w, figure_h), key='-CANVAS3-'),
+             sg.Canvas(size=(figure_w, figure_h), key='-CANVAS4-')],
+            [sg.Multiline(size=(30, 10), key = '_output_'), sg.Multiline(size=(30, 10), key = '_output2_'), sg.Multiline(size=(30, 10), key = '_output3_')],
             [sg.Submit(), sg.Exit(), sg.Button('Загрузить номинальные значения'), sg.Button('Вычислить номинальные параметры'), sg.Button('Загрузить измерения'), sg.Button('Генерация измерений'), sg.Button('2D Прорисовка')],#, sg.Output
-            [sg.Input(key='-databasename-'), sg.FileBrowse()]
+            [sg.Input(key='-databasename-'), sg.FileBrowse(), sg.Button('Расчет сборочного состояния'), sg.Button('Расстановка лопаток'), sg.Button('Сохранение комплекта')]
         ]
         window = sg.Window('MVC Test', layout, grab_anywhere=True, finalize=True)
         figure = mpl.figure.Figure(figsize=(4, 3), dpi=100)  # 5, 4
@@ -75,6 +45,14 @@ class MainForm():
         canvas.plot(*self.powerplot(1, 1))
         # Второе окно
         canvas2 = MPLgraph(figure, window['-CANVAS2-'].TKCanvas)
+        canvas2._tkcanvas.pack(side=tk.BOTTOM, expand=tk.YES, fill=tk.BOTH)
+        canvas2.plot(*self.powerplot(1, 1))
+        # Третье окно
+        canvas2 = MPLgraph(figure, window['-CANVAS3-'].TKCanvas)
+        canvas2._tkcanvas.pack(side=tk.BOTTOM, expand=tk.YES, fill=tk.BOTH)
+        canvas2.plot(*self.powerplot(1, 1))
+        # Четвертое окно
+        canvas2 = MPLgraph(figure, window['-CANVAS4-'].TKCanvas)
         canvas2._tkcanvas.pack(side=tk.BOTTOM, expand=tk.YES, fill=tk.BOTH)
         canvas2.plot(*self.powerplot(1, 1))
 
@@ -189,8 +167,16 @@ class MainForm():
                 window.FindElement('_output2_').Update('')
                 window['_output2_']. print('You entered ', result_request)
 
+                #Массив порядоковых номеров лопаток в комплекте
+                arrayNumberOfBlades = np.linspace(1, self.settings.GetValue(self.settings.number_of_blades_name),
+                                                  self.settings.GetValue(self.settings.number_of_blades_name),
+                                                  endpoint=True).astype('int64')
+                self.settings.SetValue(self.settings.arrayNumberOfBlades_name, arrayNumberOfBlades)
+                window.FindElement('_output3_').Update('')
+                window['_output3_'].print('Порядок лопаток: ', arrayNumberOfBlades)
+
             if event == 'Загрузить измерения':
-                window.FindElement('_output_').Update('')
+                window.FindElement('_output2_').Update('')
                 self.settings.SetValue(self.settings.filedb_name, os.path.basename(values['-databasename-']))
                 if len(self.settings.GetValue(self.settings.filedb_name)) == 0:
                     sg.PopupAnnoying('Не указана или отсутствует база данных')  # Просто запускает окно
@@ -199,7 +185,7 @@ class MainForm():
                                                                 'measure')
                 window['_output2_'].print('Load from database: ' + self.settings.GetValue(self.settings.filedb_name))
                 result_request = self.handler.initFunction(2, parameters)
-                window.FindElement('_output2_').Update('')
+
                 window['_output2_'].print('Parameters: ' + str(result_request))
                 #Вывод всплывающего окна и выход из запроса
                 number_of_blades_dict = result_request.pop()
@@ -218,6 +204,22 @@ class MainForm():
 
                 self.settings.SetValue(self.settings.delta_thickness_name, delta_thickness)
                 self.settings.SetValue(self.settings.delta_angle_name, delta_angle)
+
+                #Массив порядоковых номеров лопаток в комплекте
+                arrayNumberOfBlades = np.linspace(1, self.settings.GetValue(self.settings.number_of_blades_name),
+                                                  self.settings.GetValue(self.settings.number_of_blades_name),
+                                                  endpoint=True).astype('int64')
+                self.settings.SetValue(self.settings.arrayNumberOfBlades_name, arrayNumberOfBlades)
+                window.FindElement('_output3_').Update('')
+                window['_output3_'].print('Порядок лопаток: ', arrayNumberOfBlades)
+
+            if event == 'Расчет сборочного состояния':
+                pass
+            if event == 'Расстановка лопаток':
+                pass
+            if event == 'Сохранение комплекта':
+                pass
+
         window.close()
 
     def powerplot(self,base, exponent):
