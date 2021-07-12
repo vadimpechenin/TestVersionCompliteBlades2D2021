@@ -7,6 +7,7 @@ from handlers.generateMeasure.generateMeasureCommandHandler import GenerateMeasu
 from handlers.loadMeasure.loadMeasureCommandHandler import LoadMeasureCommandHandler
 from handlers.calculationNominals.calculationNominalsСommandHandler import CalculationNominalscommandHandler
 from handlers.plotNominals.plotNominalsCommandHandler import PlotNominalsCommandHandler
+from handlers.сalculationAssemblyCondition.сalculationAssemblyConditionCommandHandler import CalculationAssemblyConditionCommandHandler
 
 class MainHandler():
     def __init__(self):
@@ -16,6 +17,7 @@ class MainHandler():
         self.dict[2] = LoadMeasureCommandHandler()
         self.dict[3] = CalculationNominalscommandHandler()
         self.dict[4] = PlotNominalsCommandHandler()
+        self.dict[5] = CalculationAssemblyConditionCommandHandler()
 
     def initFunction(self,code_request, parameter):
         result = None

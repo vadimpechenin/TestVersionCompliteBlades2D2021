@@ -6,6 +6,8 @@ from handlers.generateMeasure.generateMeasureCommandHandlerParameter import Gene
 from handlers.loadMeasure.loadMeasureCommandHandlerParameter import LoadMeasureCommandHandlerParameter
 from handlers.calculationNominals.calculationNominalsСommandHandlerParameter import CalculationNominalscommandHandlerParameter
 from handlers.plotNominals.plotNominalsCommandHandlerParameter import PlotNominalsCommandHandlerParameter
+from handlers.сalculationAssemblyCondition.calculationAssemblyConditionCommandHandlerParameter import CalculationAssemblyConditionCommandHandlerParameter
+
 
 from forms.mplgraph import MPLgraph
 import os
@@ -214,6 +216,24 @@ class MainForm():
                 window['_output3_'].print('Порядок лопаток: ', arrayNumberOfBlades)
 
             if event == 'Расчет сборочного состояния':
+                arrayNumberOfBlades = self.settings.GetValue(self.settings.arrayNumberOfBlades_name)
+                pointsBackThroughParams = self.settings.GetValue(self.settings.pointsBackThroughParams_name)
+                delta_thickness = self.settings.GetValue(self.settings.delta_thickness_name)
+                delta_angle = self.settings.GetValue(self.settings.delta_angle_name)
+                thickness_T = self.settings.GetValue(self.settings.thickness_T_name)
+                thickness_B = self.settings.GetValue(self.settings.thickness_B_name)
+                thickness = self.settings.GetValue(self.settings.thickness_name)
+                parameters = CalculationAssemblyConditionCommandHandlerParameter(self.settings.GetValue(self.settings.arrayNumberOfBlades_name),
+                                                                                 self.settings.GetValue(self.settings.pointsBackThroughParams_name),
+                                                                                 self.settings.GetValue(self.settings.delta_thickness_name),
+                                                                                 self.settings.GetValue(self.settings.delta_angle_name),
+                                                                                 self.settings.GetValue(
+                                                                                     self.settings.angle_name),
+                                                                                 self.settings.GetValue(self.settings.thickness_T_name),
+                                                                                 self.settings.GetValue(self.settings.thickness_B_name),
+                                                                                 self.settings.GetValue(self.settings.thickness_name))
+                array_of_tickness = self.handler.initFunction(5, parameters)
+                g=0
                 pass
             if event == 'Расстановка лопаток':
                 pass
