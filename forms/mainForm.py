@@ -28,7 +28,7 @@ class MainForm():
         #Переменные, с которыми будет работать форма
         self.settings = settings
     def show(self):
-        figure_w, figure_h = 200, 200
+        figure_w, figure_h = 300, 300
         layout = [
             [sg.Text('Количество лопаток'), sg.InputText('84', key='-numberblades-'), sg.Text('exponent'), sg.InputText('1', key='-null-')],
             [sg.Canvas(size=(figure_w, figure_h), key='-CANVAS-'),
@@ -44,19 +44,19 @@ class MainForm():
         # Первое окно
         canvas = MPLgraph(figure, window['-CANVAS-'].TKCanvas)
         canvas._tkcanvas.pack(side=tk.BOTTOM, fill=tk.BOTH)  # expand=tk.YES,
-        canvas.plot(*self.powerplot(1, 1))
+        #canvas.plot(*self.powerplot(1, 1))
         # Второе окно
         canvas2 = MPLgraph(figure, window['-CANVAS2-'].TKCanvas)
         canvas2._tkcanvas.pack(side=tk.BOTTOM, expand=tk.YES, fill=tk.BOTH)
-        canvas2.plot(*self.powerplot(1, 1))
+        #canvas2.plot(*self.powerplot(1, 1))
         # Третье окно
-        canvas2 = MPLgraph(figure, window['-CANVAS3-'].TKCanvas)
-        canvas2._tkcanvas.pack(side=tk.BOTTOM, expand=tk.YES, fill=tk.BOTH)
-        canvas2.plot(*self.powerplot(1, 1))
+        canvas3 = MPLgraph(figure, window['-CANVAS3-'].TKCanvas)
+        canvas3._tkcanvas.pack(side=tk.BOTTOM, expand=tk.YES, fill=tk.BOTH)
+        #canvas2.plot(*self.powerplot(1, 1))
         # Четвертое окно
-        canvas2 = MPLgraph(figure, window['-CANVAS4-'].TKCanvas)
-        canvas2._tkcanvas.pack(side=tk.BOTTOM, expand=tk.YES, fill=tk.BOTH)
-        canvas2.plot(*self.powerplot(1, 1))
+        canvas4 = MPLgraph(figure, window['-CANVAS4-'].TKCanvas)
+        canvas4._tkcanvas.pack(side=tk.BOTTOM, expand=tk.YES, fill=tk.BOTH)
+        #canvas2.plot(*self.powerplot(1, 1))
 
         while True:
             event, values = window.Read()  # event = name of event; values = {0: str, 0: str} of entry values
@@ -216,13 +216,14 @@ class MainForm():
                 window['_output3_'].print('Порядок лопаток: ', arrayNumberOfBlades)
 
             if event == 'Расчет сборочного состояния':
-                arrayNumberOfBlades = self.settings.GetValue(self.settings.arrayNumberOfBlades_name)
-                pointsBackThroughParams = self.settings.GetValue(self.settings.pointsBackThroughParams_name)
-                delta_thickness = self.settings.GetValue(self.settings.delta_thickness_name)
-                delta_angle = self.settings.GetValue(self.settings.delta_angle_name)
-                thickness_T = self.settings.GetValue(self.settings.thickness_T_name)
-                thickness_B = self.settings.GetValue(self.settings.thickness_B_name)
-                thickness = self.settings.GetValue(self.settings.thickness_name)
+                # Рассчет сборки с учетом существующей расстановки
+                if self.settings.GetValue(self.settings.number_of_blades_name) == 0 or self.settings.GetValue(
+                        self.settings.number_of_blades_name) == None:
+                    sg.PopupAnnoying('Нет данных по измеренным отклонениям')  # Просто запускает окно
+                    continue
+                if self.settings.GetValue(self.settings.thickness_name) == None:
+                    sg.PopupAnnoying('Не загружены значения допусков')  # Просто запускает окно
+                    continue
                 parameters = CalculationAssemblyConditionCommandHandlerParameter(self.settings.GetValue(self.settings.arrayNumberOfBlades_name),
                                                                                  self.settings.GetValue(self.settings.pointsBackThroughParams_name),
                                                                                  self.settings.GetValue(self.settings.delta_thickness_name),
@@ -232,9 +233,18 @@ class MainForm():
                                                                                  self.settings.GetValue(self.settings.thickness_T_name),
                                                                                  self.settings.GetValue(self.settings.thickness_B_name),
                                                                                  self.settings.GetValue(self.settings.thickness_name))
-                array_of_tickness = self.handler.initFunction(5, parameters)
-                g=0
-                pass
+                assemblyGaps = self.handler.initFunction(5, parameters)
+
+                self.settings.SetValue(self.settings.assemblyGaps_name,assemblyGaps)
+
+                canvas.clear()
+                x_array = np.linspace(1,parameters.arrayNumberOfBlades.shape[0],parameters.arrayNumberOfBlades.shape[0])
+                canvas.plot(x_array, assemblyGaps.gap,'№ лопатки', 'Зазор')
+
+                canvas2.clear()
+                canvas2.plot_hist(parameters.delta_thickness, self.settings.delta_thickness_name, 'Количество')
+
+
             if event == 'Расстановка лопаток':
                 pass
             if event == 'Сохранение комплекта':
@@ -242,19 +252,11 @@ class MainForm():
 
         window.close()
 
+
+    def plot_gap(self,number_of_blades,gap):
+        pass
+
     def powerplot(self,base, exponent):
-        """
-        Calculates data for plotting the function: y = (base * x) ** exponent,
-        for x = 0...10.
-        Arguments: base and exponent as floats
-        Returns: two numpy arrays of x and y coordinates (length 800).
-        """
-
-        x = np.linspace(0, 10, 800)
-        y = (x * base) ** exponent
-        return x, y
-
-    def powerplot2(self,base, exponent):
         """
         Calculates data for plotting the function: y = (base * x) ** exponent,
         for x = 0...10.

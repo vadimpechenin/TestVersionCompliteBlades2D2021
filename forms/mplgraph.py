@@ -20,10 +20,19 @@ class MPLgraph(FigureCanvasTkAgg):
         self.toolbar = NavigationToolbar2Tk(self, parent)
         self.toolbar.update()
 
-    def plot(self, x, y):
+    def plot(self, x, y, x_lab, y_lab):
         """Take two arrays for x and y coordinates and plot the data."""
         self.add.plot(x, y)
+        self.add.set_xlabel(x_lab)
+        self.add.set_ylabel(y_lab)
         self.figure.canvas.draw()  # DRAW IS CRITICAL TO REFRESH
+
+    def plot_hist(self, data, x_lab, y_lab):
+        """Take two arrays for x and y coordinates and plot the data."""
+        self.add.hist(data, bins=6, histtype='stepfilled', color='steelblue')
+        self.add.set_xlabel(x_lab)
+        self.add.set_ylabel(y_lab)
+        self.figure.canvas.draw()
 
     def clear(self):
         """Erase the plot."""

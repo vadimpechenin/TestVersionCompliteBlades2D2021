@@ -30,6 +30,8 @@ class ApplicationSettings():
     # Порядок лопаток
     arrayNumberOfBlades_name = 'arrayNumberOfBlades'
 
+    # Сборочные параметры
+    assemblyGaps_name = 'assemblyGaps'
     values = {}
 
     def __init__(self):
@@ -60,6 +62,7 @@ class ApplicationSettings():
         self.values[self.filedb_name] = ''
         self.values[self.pointsBackThroughParams_name] = None
         self.values[self.arrayNumberOfBlades_name] = None
+        self.values[self.assemblyGaps_name] = None
 
     def getNames(self):
         #Возвращает все названия параметров, необходимых для приложения
