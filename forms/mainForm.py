@@ -9,14 +9,13 @@ from handlers.plotNominals.plotNominalsCommandHandlerParameter import PlotNomina
 from handlers.сalculationAssemblyCondition.calculationAssemblyConditionCommandHandlerParameter import CalculationAssemblyConditionCommandHandlerParameter
 
 
-from forms.mplgraph import MPLgraph
+from forms.mplgraph import DrawClass
 import os
-import tkinter as tk
+
 
 import matplotlib as mpl
 mpl.use("TkAgg")  # MUST be invoked prior to importing mpl backends!
-from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg,
-                                               NavigationToolbar2Tk)  # NavigationToolbar2TkAgg was deprecated
+
 import numpy as np
 import PySimpleGUI as sg
 
@@ -27,54 +26,72 @@ class MainForm():
         self.handler = handler
         #Переменные, с которыми будет работать форма
         self.settings = settings
+        # Переменные для прорисовки
+        self._VARS = {'window': False,
+                     'fig_agg1': False,
+                     'pltFig1': False,
+                     'fig_agg2': False,
+                     'pltFig2': False,
+                     'fig_agg3': False,
+                     'pltFig3': False,
+                      'fig_agg4': False,
+                      'pltFig4': False
+                     }
     def show(self):
-        figure_w, figure_h = 300, 300
+        figure_w, figure_h = 200, 200
         layout = [
-            [sg.Text('Количество лопаток'), sg.InputText('84', key='-numberblades-'), sg.Text('exponent'), sg.InputText('1', key='-null-')],
-            [sg.Canvas(size=(figure_w, figure_h), key='-CANVAS-'),
-             sg.Canvas(size=(figure_w, figure_h), key='-CANVAS2-'),
-            sg.Canvas(size=(figure_w, figure_h), key='-CANVAS3-'),
-             sg.Canvas(size=(figure_w, figure_h), key='-CANVAS4-')],
-            [sg.Multiline(size=(30, 10), key = '_output_'), sg.Multiline(size=(30, 10), key = '_output2_'), sg.Multiline(size=(30, 10), key = '_output3_')],
-            [sg.Submit(), sg.Exit(), sg.Button('Загрузить номинальные значения'), sg.Button('Вычислить номинальные параметры'), sg.Button('Загрузить измерения'), sg.Button('Генерация измерений'), sg.Button('2D Прорисовка')],#, sg.Output
+            [sg.Text('Количество лопаток'), sg.InputText('84', key='-numberblades-')],
+            [sg.Canvas(size=(figure_w, figure_h), key='figCanvas1'),
+             sg.Canvas(size=(figure_w, figure_h), key='figCanvas2'),
+             sg.Canvas(size=(figure_w, figure_h), key='figCanvas3'),
+             sg.Canvas(size=(figure_w, figure_h), key='figCanvas4')],
+            [sg.Multiline(size=(30, 10), key = '_output_'), sg.Multiline(size=(30, 10), key = '_output2_'), sg.Multiline(size=(60, 10), key = '_output3_')],
+            [sg.Exit(), sg.Button('Загрузить номинальные значения'), sg.Button('Вычислить номинальные параметры'), sg.Button('Загрузить измерения'), sg.Button('Генерация измерений'), sg.Button('2D Прорисовка')],#, sg.Output
             [sg.Input(key='-databasename-'), sg.FileBrowse(), sg.Button('Расчет сборочного состояния'), sg.Button('Расстановка лопаток'), sg.Button('Сохранение комплекта')]
         ]
-        window = sg.Window('MVC Test', layout, grab_anywhere=True, finalize=True)
-        figure = mpl.figure.Figure(figsize=(4, 3), dpi=100)  # 5, 4
-        # Первое окно
-        canvas = MPLgraph(figure, window['-CANVAS-'].TKCanvas)
-        canvas._tkcanvas.pack(side=tk.BOTTOM, fill=tk.BOTH)  # expand=tk.YES,
-        #canvas.plot(*self.powerplot(1, 1))
-        # Второе окно
-        canvas2 = MPLgraph(figure, window['-CANVAS2-'].TKCanvas)
-        canvas2._tkcanvas.pack(side=tk.BOTTOM, expand=tk.YES, fill=tk.BOTH)
-        #canvas2.plot(*self.powerplot(1, 1))
-        # Третье окно
-        canvas3 = MPLgraph(figure, window['-CANVAS3-'].TKCanvas)
-        canvas3._tkcanvas.pack(side=tk.BOTTOM, expand=tk.YES, fill=tk.BOTH)
-        #canvas2.plot(*self.powerplot(1, 1))
-        # Четвертое окно
-        canvas4 = MPLgraph(figure, window['-CANVAS4-'].TKCanvas)
-        canvas4._tkcanvas.pack(side=tk.BOTTOM, expand=tk.YES, fill=tk.BOTH)
-        #canvas2.plot(*self.powerplot(1, 1))
+        self._VARS['window']  = sg.Window('MVC Test', layout, grab_anywhere=True, finalize=True,
+                            resizable=True,background_color='#FDF6E3')
+        drawClass = DrawClass(self._VARS)
+
+
+        figCanvasName1 = 'figCanvas1'
+        figCanvasName2 = 'figCanvas2'
+        figCanvasName3 = 'figCanvas3'
+        figCanvasName4 = 'figCanvas4'
+
+        fig_aggName1 = 'fig_agg1'
+        fig_aggName2 = 'fig_agg2'
+        fig_aggName3 = 'fig_agg3'
+        fig_aggName4 = 'fig_agg4'
+
+        pltFigName1 = 'pltFig1'
+        pltFigName2 = 'pltFig2'
+        pltFigName3 = 'pltFig3'
+        pltFigName4 = 'pltFig4'
+
+        dataXY = (0, 0)
+        drawClass.drawChart(figCanvasName1, pltFigName1, fig_aggName1,dataXY,'№ лопатки', 'Зазор')
+        drawClass.drawHist(figCanvasName2, pltFigName2, fig_aggName2,dataXY,'Зазор', 'Количество')
+        drawClass.drawHist(figCanvasName3, pltFigName3, fig_aggName3,dataXY[0], 'Отклонение толщины', 'Количество')
+        drawClass.drawHist(figCanvasName4, pltFigName4, fig_aggName4, dataXY[0], 'Отклонение толщины', 'Количество')
+        drawClass.clearChart(figCanvasName1, pltFigName1, fig_aggName1)
+        drawClass.clearChart(figCanvasName2, pltFigName2, fig_aggName2)
+        drawClass.clearChart(figCanvasName3, pltFigName3, fig_aggName3)
+        drawClass.clearChart(figCanvasName4, pltFigName4, fig_aggName4)
 
         while True:
-            event, values = window.Read()  # event = name of event; values = {0: str, 0: str} of entry values
+            event, values = self._VARS['window'].Read()  # event = name of event; values = {0: str, 0: str} of entry values
             if event in (None, 'Exit'):  # If user closed window with X or if user clicked "Exit" event then exit
                 break
-            if event == 'Submit':
-                x, y = self.powerplot(float(values['-numberblades-']), float(values['-null-']))
-                canvas.clear()
-                canvas.plot(x, y)
 
             if event == 'Загрузить номинальные значения':
-                window.FindElement('_output_').Update('')
+                self._VARS['window'].FindElement('_output_').Update('')
                 self.settings.SetValue(self.settings.filedb_name, os.path.basename(values['-databasename-']))
                 if len(self.settings.GetValue(self.settings.filedb_name))==0:
                     sg.PopupAnnoying('Не указана или отсутствует база данных')  # Просто запускает окно
                     continue
                 parameters = LoadNominalsCommandHandlerParameter(self.settings.GetValue(self.settings.filedb_name), 'nominal')
-                window['_output_'].print('Load from database: ' + self.settings.GetValue(self.settings.filedb_name))
+                self._VARS['window']['_output_'].print('Load from database: ' + self.settings.GetValue(self.settings.filedb_name))
                 result_request = self.handler.initFunction(0, parameters)
                 #Сохранение переменных формы
                 self.settings.SetValue(self.settings.T_thickness_name, [result_request[0]['T_thickness_lower'],
@@ -107,7 +124,7 @@ class MainForm():
                 self.settings.SetValue(self.settings.slice_B_name, result_request[0]['slice_B'])# со стороны спинки
                 self.settings.SetValue(self.settings.slice_T_name, result_request[0]['slice_T'])# со стороны корыта
 
-                window['_output_'].print('Parameters: ' + str(result_request))
+                self._VARS['window']['_output_'].print('Parameters: ' + str(result_request))
 
             if event == 'Вычислить номинальные параметры':
                 if self.settings.GetValue(self.settings.thickness_name)==None:
@@ -166,33 +183,33 @@ class MainForm():
                                                                     self.settings.GetValue(self.settings.delta_thickness_name),
                                                                     self.settings.GetValue(self.settings.delta_angle_name))
                 result_request = self.handler.initFunction(1, parameters)
-                window.FindElement('_output2_').Update('')
-                window['_output2_']. print('You entered ', result_request)
+                self._VARS['window'].FindElement('_output2_').Update('')
+                self._VARS['window']['_output2_']. print('You entered ', result_request)
 
                 #Массив порядоковых номеров лопаток в комплекте
                 arrayNumberOfBlades = np.linspace(1, self.settings.GetValue(self.settings.number_of_blades_name),
                                                   self.settings.GetValue(self.settings.number_of_blades_name),
                                                   endpoint=True).astype('int64')
                 self.settings.SetValue(self.settings.arrayNumberOfBlades_name, arrayNumberOfBlades)
-                window.FindElement('_output3_').Update('')
-                window['_output3_'].print('Порядок лопаток: ', arrayNumberOfBlades)
+                self._VARS['window'].FindElement('_output3_').Update('')
+                self._VARS['window']['_output3_'].print('Порядок лопаток: ', arrayNumberOfBlades)
 
             if event == 'Загрузить измерения':
-                window.FindElement('_output2_').Update('')
+                self._VARS['window'].FindElement('_output2_').Update('')
                 self.settings.SetValue(self.settings.filedb_name, os.path.basename(values['-databasename-']))
                 if len(self.settings.GetValue(self.settings.filedb_name)) == 0:
                     sg.PopupAnnoying('Не указана или отсутствует база данных')  # Просто запускает окно
                     continue
                 parameters = LoadMeasureCommandHandlerParameter(self.settings.GetValue(self.settings.filedb_name),
                                                                 'measure')
-                window['_output2_'].print('Load from database: ' + self.settings.GetValue(self.settings.filedb_name))
+                self._VARS['window']['_output2_'].print('Load from database: ' + self.settings.GetValue(self.settings.filedb_name))
                 result_request = self.handler.initFunction(2, parameters)
 
-                window['_output2_'].print('Parameters: ' + str(result_request))
+                self._VARS['window']['_output2_'].print('Parameters: ' + str(result_request))
                 #Вывод всплывающего окна и выход из запроса
                 number_of_blades_dict = result_request.pop()
                 self.settings.SetValue(self.settings.number_of_blades_name, number_of_blades_dict[0]['Количество'])
-                window.FindElement('-numberblades-').Update(str(self.settings.GetValue(self.settings.number_of_blades_name)))
+                self._VARS['window'].FindElement('-numberblades-').Update(str(self.settings.GetValue(self.settings.number_of_blades_name)))
                 if self.settings.GetValue(self.settings.number_of_blades_name)==0 or self.settings.GetValue(self.settings.number_of_blades_name)==None:
                     sg.PopupAnnoying('Нет данных по измеренным отклонениям')  # Просто запускает окно
                     continue
@@ -212,8 +229,8 @@ class MainForm():
                                                   self.settings.GetValue(self.settings.number_of_blades_name),
                                                   endpoint=True).astype('int64')
                 self.settings.SetValue(self.settings.arrayNumberOfBlades_name, arrayNumberOfBlades)
-                window.FindElement('_output3_').Update('')
-                window['_output3_'].print('Порядок лопаток: ', arrayNumberOfBlades)
+                self._VARS['window'].FindElement('_output3_').Update('')
+                self._VARS['window']['_output3_'].print('Порядок лопаток: ', arrayNumberOfBlades)
 
             if event == 'Расчет сборочного состояния':
                 # Рассчет сборки с учетом существующей расстановки
@@ -237,12 +254,19 @@ class MainForm():
 
                 self.settings.SetValue(self.settings.assemblyGaps_name,assemblyGaps)
 
-                canvas.clear()
-                x_array = np.linspace(1,parameters.arrayNumberOfBlades.shape[0],parameters.arrayNumberOfBlades.shape[0])
-                canvas.plot(x_array, assemblyGaps.gap,'№ лопатки', 'Зазор')
 
-                canvas2.clear()
-                canvas2.plot_hist(parameters.delta_thickness, self.settings.delta_thickness_name, 'Количество')
+                x_array = np.linspace(1,parameters.arrayNumberOfBlades.shape[0],parameters.arrayNumberOfBlades.shape[0])
+
+                drawClass.clearChart(figCanvasName1, pltFigName1, fig_aggName1)
+                drawClass.clearChart(figCanvasName2, pltFigName2, fig_aggName2)
+                drawClass.clearChart(figCanvasName3, pltFigName3, fig_aggName3)
+                drawClass.clearChart(figCanvasName4, pltFigName4, fig_aggName4)
+                drawClass.drawChart(figCanvasName1, pltFigName1, fig_aggName1, (x_array, assemblyGaps.gap),'№ лопатки', 'Зазор')
+                drawClass.drawHist(figCanvasName2, pltFigName2, fig_aggName2, assemblyGaps.gap, 'Зазор', 'Количество')
+                drawClass.drawHist(figCanvasName3, pltFigName3, fig_aggName3, parameters.delta_thickness, 'Отклонение толщины',
+                                   'Количество')
+                drawClass.drawHist(figCanvasName4, pltFigName4, fig_aggName4, parameters.delta_angle, 'Отклонение угла',
+                                   'Количество')
 
 
             if event == 'Расстановка лопаток':
@@ -250,7 +274,7 @@ class MainForm():
             if event == 'Сохранение комплекта':
                 pass
 
-        window.close()
+        self._VARS['window'].close()
 
 
     def plot_gap(self,number_of_blades,gap):
