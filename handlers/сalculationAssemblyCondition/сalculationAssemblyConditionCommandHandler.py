@@ -27,16 +27,18 @@ class CalculationAssemblyConditionCommandHandler(BaseCommandHandler):
         gap_Squre_B = np.zeros(arrayNumberOfBlades_num.shape[0])
         gap_Squre_T = np.zeros(arrayNumberOfBlades_num.shape[0])
         delta_chord_T_B_array=np.zeros((arrayNumberOfBlades_num.shape[0],2))
+        k = 0
         for i in arrayNumberOfBlades_num:
-            gap_Squre_B[i] = self.model_blade_error_2D_B(thickness_B_array[i], parameters.delta_angle[i],
+            gap_Squre_B[k] = self.model_blade_error_2D_B(thickness_B_array[i], parameters.delta_angle[i],
                                                          parameters.angle, parameters.pointsBackThroughParams.pointsBackParams.k0B,
                                                          parameters.pointsBackThroughParams.pointsBackParams.b0B, P_B,calcSquare)
-            gap_Squre_T[i] = self.model_blade_error_2D_T(thickness_T_array[i], parameters.delta_angle[i],
+            gap_Squre_T[k] = self.model_blade_error_2D_T(thickness_T_array[i], parameters.delta_angle[i],
                                                          parameters.angle, parameters.pointsBackThroughParams.pointsTroughParams.k0T,
                                                          parameters.pointsBackThroughParams.pointsTroughParams.b0T, P_T, calcSquare)
 
-            delta_chord_T_B_array[i,:]= self.gap_function_1(gap_Squre_T[i], gap_Squre_B[i],
+            delta_chord_T_B_array[k,:]= self.gap_function_1(gap_Squre_T[k], gap_Squre_B[k],
                                                                           parameters.pointsBackThroughParams.gap_Squre_T_nom, parameters.pointsBackThroughParams.gap_Squre_B_nom)
+            k+=1
 
         gap = self.cycle_of_calculate_gaps(delta_chord_T_B_array[:,0], delta_chord_T_B_array[:,1], arrayNumberOfBlades_num.shape[0])
 

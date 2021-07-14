@@ -7,7 +7,7 @@ from handlers.loadMeasure.loadMeasureCommandHandlerParameter import LoadMeasureC
 from handlers.calculationNominals.calculationNominalsСommandHandlerParameter import CalculationNominalscommandHandlerParameter
 from handlers.plotNominals.plotNominalsCommandHandlerParameter import PlotNominalsCommandHandlerParameter
 from handlers.сalculationAssemblyCondition.calculationAssemblyConditionCommandHandlerParameter import CalculationAssemblyConditionCommandHandlerParameter
-
+from handlers.placementBlades.placementBladesCommandHandlerParameter import PlacementBladesCommandHandlerParameter
 
 from forms.mplgraph import DrawClass
 import os
@@ -257,6 +257,8 @@ class MainForm():
 
                 x_array = np.linspace(1,parameters.arrayNumberOfBlades.shape[0],parameters.arrayNumberOfBlades.shape[0])
 
+
+                #Надо выделить в отдельную функцию
                 drawClass.clearChart(figCanvasName1, pltFigName1, fig_aggName1)
                 drawClass.clearChart(figCanvasName2, pltFigName2, fig_aggName2)
                 drawClass.clearChart(figCanvasName3, pltFigName3, fig_aggName3)
@@ -270,7 +272,23 @@ class MainForm():
 
 
             if event == 'Расстановка лопаток':
-                pass
+                # Алгоритм расстановки лопаток методом сортировки
+                if self.settings.GetValue(self.settings.number_of_blades_name) == 0 or self.settings.GetValue(
+                        self.settings.number_of_blades_name) == None:
+                    sg.PopupAnnoying('Нет данных по измеренным отклонениям')  # Просто запускает окно
+                    continue
+                if self.settings.GetValue(self.settings.assemblyGaps_name) == None:
+                    sg.PopupAnnoying('Не рассчитаны необходимые параметры на шаге Расчет сборочного состояния')  # Просто запускает окно
+                    continue
+                parameters = PlacementBladesCommandHandlerParameter(
+                    self.settings.GetValue(self.settings.arrayNumberOfBlades_name),
+                    self.settings.GetValue(self.settings.assemblyGaps_name),
+                   )
+                arrayNumberOfBlades_sort = self.handler.initFunction(6, parameters)
+                self.settings.SetValue(self.settings.arrayNumberOfBlades_name, arrayNumberOfBlades_sort)
+                self._VARS['window'].FindElement('_output3_').Update('')
+                self._VARS['window']['_output3_'].print('Порядок лопаток после расстановки: ', arrayNumberOfBlades_sort)
+
             if event == 'Сохранение комплекта':
                 pass
 
