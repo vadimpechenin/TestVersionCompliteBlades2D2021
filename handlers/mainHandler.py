@@ -9,6 +9,7 @@ from handlers.calculationNominals.calculationNominalsСommandHandler import Calc
 from handlers.plotNominals.plotNominalsCommandHandler import PlotNominalsCommandHandler
 from handlers.сalculationAssemblyCondition.сalculationAssemblyConditionCommandHandler import CalculationAssemblyConditionCommandHandler
 from handlers.placementBlades.placementBladesCommandHandler import PlacementBladesCommandHandler
+from handlers.calculationChordsOfBlades.calculationChordsOfBladesCommandHandler import CalculationChordsOfBladesCommandHandler
 
 class MainHandler():
     def __init__(self):
@@ -19,7 +20,8 @@ class MainHandler():
         self.dict[3] = CalculationNominalscommandHandler()
         self.dict[4] = PlotNominalsCommandHandler()
         self.dict[5] = CalculationAssemblyConditionCommandHandler()
-        self.dict[6] = PlacementBladesCommandHandler()
+        self.dict[6] = CalculationChordsOfBladesCommandHandler()
+        self.dict[7] = PlacementBladesCommandHandler()
 
     def initFunction(self,code_request, parameter):
         result = None

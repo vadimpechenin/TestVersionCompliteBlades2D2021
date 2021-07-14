@@ -31,6 +31,7 @@ class ApplicationSettings():
     arrayNumberOfBlades_name = 'arrayNumberOfBlades'
 
     # Сборочные параметры
+    assemblyChord_name = 'assemblyChord'
     assemblyGaps_name = 'assemblyGaps'
     values = {}
 
@@ -62,6 +63,7 @@ class ApplicationSettings():
         self.values[self.filedb_name] = ''
         self.values[self.pointsBackThroughParams_name] = None
         self.values[self.arrayNumberOfBlades_name] = None
+        self.values[self.assemblyChord_name] = None
         self.values[self.assemblyGaps_name] = None
 
     def getNames(self):

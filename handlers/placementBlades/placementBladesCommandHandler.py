@@ -12,9 +12,9 @@ class PlacementBladesCommandHandler(BaseCommandHandler):
         # parameters.gap - Отклонение хорды (площади) на спинках
         # Сортировка по значениям толщин
         # Прямая для спинок
-        idx_B = np.argsort(parameters.assemblyGaps.delta_chord_B_array)
+        idx_B = np.argsort(parameters.assemblyChord.delta_chord_B_array)
         # Обратная для корыт
-        idx_T = np.argsort(parameters.assemblyGaps.delta_chord_T_array)[::-1]
+        idx_T = np.argsort(parameters.assemblyChord.delta_chord_T_array)[::-1]
 
         idx_new = []
         k1 = 0
@@ -32,5 +32,5 @@ class PlacementBladesCommandHandler(BaseCommandHandler):
                 idx_T = np.delete(idx_T, 0)
                 k1 = 0
 
-        arrayNumberOfBlades_sort = np.asarray(idx_new, dtype=np.int64)
+        arrayNumberOfBlades_sort = np.asarray(idx_new, dtype=np.int64) + 1
         return arrayNumberOfBlades_sort

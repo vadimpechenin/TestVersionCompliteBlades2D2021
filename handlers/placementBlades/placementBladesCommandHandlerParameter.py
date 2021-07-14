@@ -1,6 +1,6 @@
 from handlers.baseCommandHandlerParameter import BaseCommandHandlerParameter
 
 class PlacementBladesCommandHandlerParameter(BaseCommandHandlerParameter):
-    def __init__(self, arrayNumberOfBlades, assemblyGaps):
+    def __init__(self, arrayNumberOfBlades, assemblyChord):
         self.arrayNumberOfBlades = arrayNumberOfBlades
-        self.assemblyGaps = assemblyGaps
+        self.assemblyChord = assemblyChord

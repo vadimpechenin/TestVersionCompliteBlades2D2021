@@ -8,6 +8,7 @@ from handlers.calculationNominals.calculationNominalsСommandHandlerParameter im
 from handlers.plotNominals.plotNominalsCommandHandlerParameter import PlotNominalsCommandHandlerParameter
 from handlers.сalculationAssemblyCondition.calculationAssemblyConditionCommandHandlerParameter import CalculationAssemblyConditionCommandHandlerParameter
 from handlers.placementBlades.placementBladesCommandHandlerParameter import PlacementBladesCommandHandlerParameter
+from handlers.calculationChordsOfBlades.calculationChordsOfBladesCommandHandlerParameter import CalculationChordsOfBladesCommandHandlerParameter
 
 from forms.mplgraph import DrawClass
 import os
@@ -184,7 +185,7 @@ class MainForm():
                                                                     self.settings.GetValue(self.settings.delta_angle_name))
                 result_request = self.handler.initFunction(1, parameters)
                 self._VARS['window'].FindElement('_output2_').Update('')
-                self._VARS['window']['_output2_']. print('You entered ', result_request)
+                self._VARS['window']['_output2_'].print('You entered ', result_request)
 
                 #Массив порядоковых номеров лопаток в комплекте
                 arrayNumberOfBlades = np.linspace(1, self.settings.GetValue(self.settings.number_of_blades_name),
@@ -193,6 +194,18 @@ class MainForm():
                 self.settings.SetValue(self.settings.arrayNumberOfBlades_name, arrayNumberOfBlades)
                 self._VARS['window'].FindElement('_output3_').Update('')
                 self._VARS['window']['_output3_'].print('Порядок лопаток: ', arrayNumberOfBlades)
+
+                parameters = CalculationChordsOfBladesCommandHandlerParameter(self.settings.GetValue(self.settings.arrayNumberOfBlades_name),
+                                                                                 self.settings.GetValue(self.settings.pointsBackThroughParams_name),
+                                                                                 self.settings.GetValue(self.settings.delta_thickness_name),
+                                                                                 self.settings.GetValue(self.settings.delta_angle_name),
+                                                                                 self.settings.GetValue(
+                                                                                     self.settings.angle_name),
+                                                                                 self.settings.GetValue(self.settings.thickness_T_name),
+                                                                                 self.settings.GetValue(self.settings.thickness_B_name),
+                                                                                 self.settings.GetValue(self.settings.thickness_name))
+                assemblyChord = self.handler.initFunction(6, parameters)
+                self.settings.SetValue(self.settings.assemblyChord_name, assemblyChord)
 
             if event == 'Загрузить измерения':
                 self._VARS['window'].FindElement('_output2_').Update('')
@@ -232,16 +245,7 @@ class MainForm():
                 self._VARS['window'].FindElement('_output3_').Update('')
                 self._VARS['window']['_output3_'].print('Порядок лопаток: ', arrayNumberOfBlades)
 
-            if event == 'Расчет сборочного состояния':
-                # Рассчет сборки с учетом существующей расстановки
-                if self.settings.GetValue(self.settings.number_of_blades_name) == 0 or self.settings.GetValue(
-                        self.settings.number_of_blades_name) == None:
-                    sg.PopupAnnoying('Нет данных по измеренным отклонениям')  # Просто запускает окно
-                    continue
-                if self.settings.GetValue(self.settings.thickness_name) == None:
-                    sg.PopupAnnoying('Не загружены значения допусков')  # Просто запускает окно
-                    continue
-                parameters = CalculationAssemblyConditionCommandHandlerParameter(self.settings.GetValue(self.settings.arrayNumberOfBlades_name),
+                parameters = CalculationChordsOfBladesCommandHandlerParameter(self.settings.GetValue(self.settings.arrayNumberOfBlades_name),
                                                                                  self.settings.GetValue(self.settings.pointsBackThroughParams_name),
                                                                                  self.settings.GetValue(self.settings.delta_thickness_name),
                                                                                  self.settings.GetValue(self.settings.delta_angle_name),
@@ -250,12 +254,26 @@ class MainForm():
                                                                                  self.settings.GetValue(self.settings.thickness_T_name),
                                                                                  self.settings.GetValue(self.settings.thickness_B_name),
                                                                                  self.settings.GetValue(self.settings.thickness_name))
+                assemblyChord = self.handler.initFunction(6, parameters)
+                self.settings.SetValue(self.settings.assemblyChord_name, assemblyChord)
+
+
+            if event == 'Расчет сборочного состояния':
+                # Рассчет сборки с учетом существующей расстановки
+                if self.settings.GetValue(self.settings.number_of_blades_name) == 0 or self.settings.GetValue(
+                        self.settings.number_of_blades_name) == None:
+                    sg.PopupAnnoying('Нет данных по измеренным отклонениям')  # Просто запускает окно
+                    continue
+                if self.settings.GetValue(self.settings.assemblyChord_name) == None:
+                    sg.PopupAnnoying('Не загружены значения допусков')  # Просто запускает окно
+                    continue
+                parameters = CalculationAssemblyConditionCommandHandlerParameter(self.settings.GetValue(self.settings.arrayNumberOfBlades_name),
+                                                                                 self.settings.GetValue(self.settings.assemblyChord_name))
                 assemblyGaps = self.handler.initFunction(5, parameters)
 
                 self.settings.SetValue(self.settings.assemblyGaps_name,assemblyGaps)
 
-
-                x_array = np.linspace(1,parameters.arrayNumberOfBlades.shape[0],parameters.arrayNumberOfBlades.shape[0])
+                x_array = np.linspace(1, parameters.arrayNumberOfBlades.shape[0],parameters.arrayNumberOfBlades.shape[0])
 
 
                 #Надо выделить в отдельную функцию
@@ -263,11 +281,11 @@ class MainForm():
                 drawClass.clearChart(figCanvasName2, pltFigName2, fig_aggName2)
                 drawClass.clearChart(figCanvasName3, pltFigName3, fig_aggName3)
                 drawClass.clearChart(figCanvasName4, pltFigName4, fig_aggName4)
-                drawClass.drawChart(figCanvasName1, pltFigName1, fig_aggName1, (x_array, assemblyGaps.gap),'№ лопатки', 'Зазор')
-                drawClass.drawHist(figCanvasName2, pltFigName2, fig_aggName2, assemblyGaps.gap, 'Зазор', 'Количество')
-                drawClass.drawHist(figCanvasName3, pltFigName3, fig_aggName3, parameters.delta_thickness, 'Отклонение толщины',
+                drawClass.drawChart(figCanvasName1, pltFigName1, fig_aggName1, (x_array, assemblyGaps),'№ лопатки', 'Зазор')
+                drawClass.drawHist(figCanvasName2, pltFigName2, fig_aggName2, assemblyGaps, 'Зазор', 'Количество')
+                drawClass.drawHist(figCanvasName3, pltFigName3, fig_aggName3, self.settings.GetValue(self.settings.delta_thickness_name), 'Отклонение толщины',
                                    'Количество')
-                drawClass.drawHist(figCanvasName4, pltFigName4, fig_aggName4, parameters.delta_angle, 'Отклонение угла',
+                drawClass.drawHist(figCanvasName4, pltFigName4, fig_aggName4, self.settings.GetValue(self.settings.delta_angle_name), 'Отклонение угла',
                                    'Количество')
 
 
@@ -277,14 +295,11 @@ class MainForm():
                         self.settings.number_of_blades_name) == None:
                     sg.PopupAnnoying('Нет данных по измеренным отклонениям')  # Просто запускает окно
                     continue
-                if self.settings.GetValue(self.settings.assemblyGaps_name) == None:
-                    sg.PopupAnnoying('Не рассчитаны необходимые параметры на шаге Расчет сборочного состояния')  # Просто запускает окно
-                    continue
                 parameters = PlacementBladesCommandHandlerParameter(
                     self.settings.GetValue(self.settings.arrayNumberOfBlades_name),
-                    self.settings.GetValue(self.settings.assemblyGaps_name),
+                    self.settings.GetValue(self.settings.assemblyChord_name),
                    )
-                arrayNumberOfBlades_sort = self.handler.initFunction(6, parameters)
+                arrayNumberOfBlades_sort = self.handler.initFunction(7, parameters)
                 self.settings.SetValue(self.settings.arrayNumberOfBlades_name, arrayNumberOfBlades_sort)
                 self._VARS['window'].FindElement('_output3_').Update('')
                 self._VARS['window']['_output3_'].print('Порядок лопаток после расстановки: ', arrayNumberOfBlades_sort)
