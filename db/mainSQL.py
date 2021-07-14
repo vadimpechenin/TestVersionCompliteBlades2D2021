@@ -6,17 +6,20 @@ import numpy as np
 from sqlalchemy import create_engine
 from sqlalchemy.orm.session import sessionmaker
 
+from sqlalchemy import update
+
 from db.supportFunctions import resultproxy_to_dict
 
 from .base import Session, current_session, Base
 from .measuredParameters import MeasuredParameters
 from .nominalParameters import NominalParameters
+from .numbersOfMeasuredBlades import NumbersOfMeasuredBlades
 
 class SQLDataBase():
 
     def __init__(self,name_of_database):
         #name_of_database = 'set_of_blades'
-        self.engine = create_engine('sqlite:///' + name_of_database, echo = True)
+        self.engine = create_engine('sqlite:///' + name_of_database, echo = True)#+ '.db'
 
     def table_create(self):
         #Метод для создания таблиц и базы данных
@@ -45,16 +48,30 @@ class SQLDataBase():
         # Создание объектов в таблице MeasuredParameters
         #Генерация значений, временно здесь, нужно переносить в отдельную функцию mainHandler-а
         # Добавать в сессию
+        k = 1
         for thickness, angle in zip(delta_thickness,delta_angle):
             measured_object = MeasuredParameters(type_id=1, delta_thickness=thickness, delta_angle=angle)
             self.session.add(measured_object)
+            number_object = NumbersOfMeasuredBlades(part_id=k, type_id=1, serial_number = k)
+            self.session.add(number_object)
+            k += 1
         self.session.commit()
 
-    def select_all_parans_in_table(self,name):
+    def select_all_params_in_table(self,name):
         # Функция для подачи запроса
         request_str = "SELECT * \
                            FROM \
                            " + str(name)
+        s = self.session.execute(request_str)
+        result_of_query = resultproxy_to_dict(s)
+        return result_of_query
+
+    def select_one_params_in_table(self, name, name_column):
+        # Функция для подачи запроса
+        request_str = "SELECT " + str(name_column) + " \
+                              FROM \
+                              " + str(name) +" \
+                                WHERE type_id = 1"
         s = self.session.execute(request_str)
         result_of_query = resultproxy_to_dict(s)
         return result_of_query
@@ -72,3 +89,15 @@ class SQLDataBase():
         s = self.session.execute(request_str)
         result_of_query = resultproxy_to_dict(s)
         return result_of_query
+
+    def request_update_of_numbers(self, name, numbers):
+        #Запрос на обновление данных в таблице
+
+        k = 1
+        for i in numbers:
+            request_str = "UPDATE " + str(name) + " \
+                            SET serial_number = " + str(i) + "\
+                            WHERE part_id = " + str(k)
+            k += 1
+            self.session.execute(request_str)
+            self.session.commit()

@@ -13,6 +13,7 @@ class MeasuredParameters(Base):
     type_id = sa.Column(sa.Integer, sa.ForeignKey('nominal.type_id'), nullable=False)
     delta_thickness = sa.Column(sa.Float)
     delta_angle = sa.Column(sa.Float)
+    measure = relationship('NumbersOfMeasuredBlades', backref='measure', uselist=False)
 
     def __repr__(self):
         # для печати строки и отладки

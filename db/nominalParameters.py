@@ -39,8 +39,9 @@ class NominalParameters(Base):
     slice_T = sa.Column(sa.Float) #со стороны корыта
 
     measure = relationship('MeasuredParameters', backref='nominal', uselist=False)  # one to one
+    number = relationship('NumbersOfMeasuredBlades', backref='nominal', uselist=False)  # one to one
 
     def __repr__(self):
         # для печати строки и отладки
-        return '<Characteristics[type_id="{}", location_id="{}", receipt_date="{}"]>'.format(
-            self.type_id, self.location_id, self.characteristics_id, self.receipt_date)
+        return '<Characteristics[type_id="{}", thickness_nom="{}", thickness="{}"]>'.format(
+            self.type_id, self.thickness_nom, self.characteristics_id, self.thickness)

@@ -9,6 +9,8 @@ from handlers.plotNominals.plotNominalsCommandHandlerParameter import PlotNomina
 from handlers.сalculationAssemblyCondition.calculationAssemblyConditionCommandHandlerParameter import CalculationAssemblyConditionCommandHandlerParameter
 from handlers.placementBlades.placementBladesCommandHandlerParameter import PlacementBladesCommandHandlerParameter
 from handlers.calculationChordsOfBlades.calculationChordsOfBladesCommandHandlerParameter import CalculationChordsOfBladesCommandHandlerParameter
+from handlers.saveNumbers.saveNumbersCommandHandlerParameter import SaveNumbersCommandHandlerParameter
+
 
 from forms.mplgraph import DrawClass
 import os
@@ -39,6 +41,8 @@ class MainForm():
                       'pltFig4': False
                      }
     def show(self):
+        AppFont = 'Any 16'
+        sg.theme('black')
         figure_w, figure_h = 200, 200
         layout = [
             [sg.Text('Количество лопаток'), sg.InputText('84', key='-numberblades-')],
@@ -47,7 +51,7 @@ class MainForm():
              sg.Canvas(size=(figure_w, figure_h), key='figCanvas3'),
              sg.Canvas(size=(figure_w, figure_h), key='figCanvas4')],
             [sg.Multiline(size=(30, 10), key = '_output_'), sg.Multiline(size=(30, 10), key = '_output2_'), sg.Multiline(size=(60, 10), key = '_output3_')],
-            [sg.Exit(), sg.Button('Загрузить номинальные значения'), sg.Button('Вычислить номинальные параметры'), sg.Button('Загрузить измерения'), sg.Button('Генерация измерений'), sg.Button('2D Прорисовка')],#, sg.Output
+            [sg.Button('Выход', font=AppFont), sg.Button('Загрузить номинальные значения'), sg.Button('Вычислить номинальные параметры'), sg.Button('Загрузить измерения'), sg.Button('Генерация измерений'), sg.Button('2D Прорисовка')],#, sg.Output
             [sg.Input(key='-databasename-'), sg.FileBrowse(), sg.Button('Расчет сборочного состояния'), sg.Button('Расстановка лопаток'), sg.Button('Сохранение комплекта')]
         ]
         self._VARS['window']  = sg.Window('MVC Test', layout, grab_anywhere=True, finalize=True,
@@ -82,9 +86,8 @@ class MainForm():
 
         while True:
             event, values = self._VARS['window'].Read()  # event = name of event; values = {0: str, 0: str} of entry values
-            if event in (None, 'Exit'):  # If user closed window with X or if user clicked "Exit" event then exit
+            if event == sg.WIN_CLOSED or event == 'Выход':
                 break
-
             if event == 'Загрузить номинальные значения':
                 self._VARS['window'].FindElement('_output_').Update('')
                 self.settings.SetValue(self.settings.filedb_name, os.path.basename(values['-databasename-']))
@@ -180,10 +183,13 @@ class MainForm():
                                                    (T_angle_name[1] - T_angle_name[0])/6, size = self.settings.GetValue(self.settings.number_of_blades_name)))
 
                 parameters = GenerateMeasureCommandHandlerParameter(self.settings.GetValue(self.settings.filedb_name),
-                                                                    'measure',
+                                                                    'measure', 'numbers', 'serial_number',
                                                                     self.settings.GetValue(self.settings.delta_thickness_name),
                                                                     self.settings.GetValue(self.settings.delta_angle_name))
-                result_request = self.handler.initFunction(1, parameters)
+                responce_dict = self.handler.initFunction(1, parameters)
+
+                result_request = responce_dict['meas']
+
                 self._VARS['window'].FindElement('_output2_').Update('')
                 self._VARS['window']['_output2_'].print('You entered ', result_request)
 
@@ -191,6 +197,12 @@ class MainForm():
                 arrayNumberOfBlades = np.linspace(1, self.settings.GetValue(self.settings.number_of_blades_name),
                                                   self.settings.GetValue(self.settings.number_of_blades_name),
                                                   endpoint=True).astype('int64')
+                arrayNumberOfBlades_list = responce_dict['number']
+                for i in range (self.settings.GetValue(self.settings.number_of_blades_name)):
+                    arrayNumberOfBlades_dict = arrayNumberOfBlades_list.pop(0)
+                    arrayNumberOfBlades[i] = arrayNumberOfBlades_dict['serial_number']
+
+
                 self.settings.SetValue(self.settings.arrayNumberOfBlades_name, arrayNumberOfBlades)
                 self._VARS['window'].FindElement('_output3_').Update('')
                 self._VARS['window']['_output3_'].print('Порядок лопаток: ', arrayNumberOfBlades)
@@ -214,9 +226,13 @@ class MainForm():
                     sg.PopupAnnoying('Не указана или отсутствует база данных')  # Просто запускает окно
                     continue
                 parameters = LoadMeasureCommandHandlerParameter(self.settings.GetValue(self.settings.filedb_name),
-                                                                'measure')
+                                                                'measure','numbers', 'serial_number')
                 self._VARS['window']['_output2_'].print('Load from database: ' + self.settings.GetValue(self.settings.filedb_name))
-                result_request = self.handler.initFunction(2, parameters)
+
+
+                responce_dict = self.handler.initFunction(2, parameters)
+
+                result_request = responce_dict['meas']
 
                 self._VARS['window']['_output2_'].print('Parameters: ' + str(result_request))
                 #Вывод всплывающего окна и выход из запроса
@@ -241,6 +257,12 @@ class MainForm():
                 arrayNumberOfBlades = np.linspace(1, self.settings.GetValue(self.settings.number_of_blades_name),
                                                   self.settings.GetValue(self.settings.number_of_blades_name),
                                                   endpoint=True).astype('int64')
+
+                arrayNumberOfBlades_list = responce_dict['number']
+                for i in range (self.settings.GetValue(self.settings.number_of_blades_name)):
+                    arrayNumberOfBlades_dict = arrayNumberOfBlades_list.pop(0)
+                    arrayNumberOfBlades[i] = arrayNumberOfBlades_dict['serial_number']
+
                 self.settings.SetValue(self.settings.arrayNumberOfBlades_name, arrayNumberOfBlades)
                 self._VARS['window'].FindElement('_output3_').Update('')
                 self._VARS['window']['_output3_'].print('Порядок лопаток: ', arrayNumberOfBlades)
@@ -305,7 +327,20 @@ class MainForm():
                 self._VARS['window']['_output3_'].print('Порядок лопаток после расстановки: ', arrayNumberOfBlades_sort)
 
             if event == 'Сохранение комплекта':
-                pass
+                self.settings.SetValue(self.settings.filedb_name, os.path.basename(values['-databasename-']))
+                if len(self.settings.GetValue(self.settings.filedb_name)) == 0:
+                    sg.PopupAnnoying('Не указана или отсутствует база данных')  # Просто запускает окно
+                    continue
+                if self.settings.GetValue(self.settings.number_of_blades_name) == 0 or self.settings.GetValue(
+                        self.settings.number_of_blades_name) == None:
+                    sg.PopupAnnoying('Нет данных по измеренным отклонениям')  # Просто запускает окно
+                    continue
+                parameters = SaveNumbersCommandHandlerParameter(self.settings.GetValue(self.settings.filedb_name),
+                                                                'numbers',
+                                                                self.settings.GetValue(self.settings.arrayNumberOfBlades_name))
+
+                self.handler.initFunction(8, parameters)
+                sg.PopupAnnoying('Схема расстановки лопаток успешно сохранена')
 
         self._VARS['window'].close()
 
