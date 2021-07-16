@@ -11,6 +11,7 @@ from handlers.сalculationAssemblyCondition.сalculationAssemblyConditionCommand
 from handlers.placementBlades.placementBladesCommandHandler import PlacementBladesCommandHandler
 from handlers.calculationChordsOfBlades.calculationChordsOfBladesCommandHandler import CalculationChordsOfBladesCommandHandler
 from handlers.saveNumbers.saveNumbersCommandHandler import SaveNumbersCommandHandler
+from handlers.plotMeasures.plotMeasuresCommandHandler import PlotMeasuresCommandHandler
 
 class MainHandler():
     def __init__(self):
@@ -24,6 +25,7 @@ class MainHandler():
         self.dict[6] = CalculationChordsOfBladesCommandHandler()
         self.dict[7] = PlacementBladesCommandHandler()
         self.dict[8] = SaveNumbersCommandHandler()
+        self.dict[9] = PlotMeasuresCommandHandler()
 
     def initFunction(self,code_request, parameter):
         result = None

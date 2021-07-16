@@ -33,6 +33,7 @@ class ApplicationSettings():
     # Сборочные параметры
     assemblyChord_name = 'assemblyChord'
     assemblyGaps_name = 'assemblyGaps'
+    assemblyGaps_init_name = 'assemblyGapsInit'
     values = {}
 
     def __init__(self):
@@ -65,6 +66,7 @@ class ApplicationSettings():
         self.values[self.arrayNumberOfBlades_name] = None
         self.values[self.assemblyChord_name] = None
         self.values[self.assemblyGaps_name] = None
+        self.values[self.assemblyGaps_init_name] = None
 
     def getNames(self):
         #Возвращает все названия параметров, необходимых для приложения
