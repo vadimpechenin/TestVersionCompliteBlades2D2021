@@ -21,11 +21,7 @@
   <component name="ChangeListManager">
     <list default="true" id="a3ef2416-4adc-4746-9f37-10bbc9c4bc10" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/set_of_blades.db" beforeDir="false" afterPath="$PROJECT_DIR$/application/set_of_blades.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/forms/mainForm.py" beforeDir="false" afterPath="$PROJECT_DIR$/forms/mainForm.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/forms/mplgraph.py" beforeDir="false" afterPath="$PROJECT_DIR$/forms/mplgraph.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/handlers/mainHandler.py" beforeDir="false" afterPath="$PROJECT_DIR$/handlers/mainHandler.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model/applicationSettings.py" beforeDir="false" afterPath="$PROJECT_DIR$/model/applicationSettings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/supportFunctions.py" beforeDir="false" afterPath="$PROJECT_DIR$/db/supportFunctions.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -41,8 +37,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/forms/mainForm.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="391">
-              <caret line="142" column="45" selection-start-line="142" selection-start-column="45" selection-end-line="142" selection-end-column="45" />
+            <state relative-caret-position="357">
+              <caret line="254" column="81" selection-start-line="254" selection-start-column="81" selection-end-line="254" selection-end-column="81" />
               <folding>
                 <element signature="e#35#140#0" expanded="true" />
               </folding>
@@ -53,7 +49,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/handlers/calculationChordsOfBlades/calculationChordsOfBladesCommandHandler.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-15">
+            <state relative-caret-position="187">
               <caret line="17" selection-start-line="17" selection-end-line="17" />
               <folding>
                 <element signature="e#0#58#0" expanded="true" />
@@ -65,8 +61,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/handlers/plotMeasures/plotMeasuresCommandHandler.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="357">
-              <caret line="21" column="150" lean-forward="true" selection-start-line="21" selection-start-column="8" selection-end-line="21" selection-end-column="150" />
+            <state relative-caret-position="306">
+              <caret line="21" column="150" selection-start-line="21" selection-start-column="8" selection-end-line="21" selection-end-column="150" />
               <folding>
                 <element signature="e#0#58#0" expanded="true" />
               </folding>
@@ -95,7 +91,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/handlers/loadNominals/loadNominalsCommandHandler.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
+            <state relative-caret-position="170">
               <caret line="11" column="54" selection-start-line="11" selection-start-column="28" selection-end-line="11" selection-end-column="54" />
               <folding>
                 <element signature="e#0#58#0" expanded="true" />
@@ -125,7 +121,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/model/applicationSettings.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="174">
+            <state relative-caret-position="1156">
               <caret line="68" column="47" selection-start-line="68" selection-start-column="25" selection-end-line="68" selection-end-column="47" />
             </state>
           </provider>
@@ -134,7 +130,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/db/mainSQL.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="374">
+            <state relative-caret-position="442">
               <caret line="38" column="84" lean-forward="true" selection-start-line="38" selection-start-column="84" selection-end-line="38" selection-end-column="96" />
               <folding>
                 <element signature="e#40#51#0" expanded="true" />
@@ -201,6 +197,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -249,7 +246,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="ProjectViewState">
@@ -318,14 +314,13 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-14" y="2" width="1936" height="1096" extended-state="0" />
-    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.88309634" visible="true" weight="0.24973656" />
-      <window_info id="Structure" order="1" sideWeight="0.11690363" side_tool="true" visible="true" weight="0.24973656" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.8817427" visible="true" weight="0.24973656" />
+      <window_info id="Structure" order="1" sideWeight="0.11825726" side_tool="true" visible="true" weight="0.24973656" />
       <window_info id="Favorites" order="2" sideWeight="0.5007899" side_tool="true" weight="0.24973656" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32987553" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.343361" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.343361" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.38278008" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -710,22 +705,56 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/handlers/loadNominals/loadNominalsCommandHandler.py">
+    <entry file="file://$PROJECT_DIR$/forms/mainForm.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="254" column="81" selection-start-line="254" selection-start-column="81" selection-end-line="254" selection-end-column="81" />
+          <folding>
+            <element signature="e#35#140#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handlers/calculationChordsOfBlades/calculationChordsOfBladesCommandHandler.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
-          <caret line="11" column="54" selection-start-line="11" selection-start-column="28" selection-end-line="11" selection-end-column="54" />
+          <caret line="17" selection-start-line="17" selection-end-line="17" />
           <folding>
             <element signature="e#0#58#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/db/mainSQL.py">
+    <entry file="file://$PROJECT_DIR$/handlers/plotMeasures/plotMeasuresCommandHandler.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="38" column="84" lean-forward="true" selection-start-line="38" selection-start-column="84" selection-end-line="38" selection-end-column="96" />
+        <state relative-caret-position="306">
+          <caret line="21" column="150" selection-start-line="21" selection-start-column="8" selection-end-line="21" selection-end-column="150" />
           <folding>
-            <element signature="e#40#51#0" expanded="true" />
+            <element signature="e#0#58#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handlers/plotMeasures/plotMeasuresCommandHandlerParameter.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret selection-end-line="9" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/forms/mplgraph.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="34" column="20" selection-start-line="34" selection-start-column="20" selection-end-line="34" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handlers/loadNominals/loadNominalsCommandHandler.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="11" column="54" selection-start-line="11" selection-start-column="28" selection-end-line="11" selection-end-column="54" />
+          <folding>
+            <element signature="e#0#58#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -737,30 +766,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/handlers/plotMeasures/plotMeasuresCommandHandlerParameter.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret selection-end-line="9" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/model/applicationSettings.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="174">
-          <caret line="68" column="47" selection-start-line="68" selection-start-column="25" selection-end-line="68" selection-end-column="47" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/handlers/plotMeasures/plotMeasuresCommandHandler.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="21" column="150" lean-forward="true" selection-start-line="21" selection-start-column="8" selection-end-line="21" selection-end-column="150" />
-          <folding>
-            <element signature="e#0#58#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/forms/mplgraphParameter.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="51">
@@ -768,29 +773,19 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/forms/mplgraph.py">
+    <entry file="file://$PROJECT_DIR$/model/applicationSettings.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="510">
-          <caret line="34" column="20" selection-start-line="34" selection-start-column="20" selection-end-line="34" selection-end-column="20" />
+        <state relative-caret-position="1156">
+          <caret line="68" column="47" selection-start-line="68" selection-start-column="25" selection-end-line="68" selection-end-column="47" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/handlers/calculationChordsOfBlades/calculationChordsOfBladesCommandHandler.py">
+    <entry file="file://$PROJECT_DIR$/db/mainSQL.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-15">
-          <caret line="17" selection-start-line="17" selection-end-line="17" />
+        <state relative-caret-position="442">
+          <caret line="38" column="84" lean-forward="true" selection-start-line="38" selection-start-column="84" selection-end-line="38" selection-end-column="96" />
           <folding>
-            <element signature="e#0#58#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/forms/mainForm.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="142" column="45" selection-start-line="142" selection-start-column="45" selection-end-line="142" selection-end-column="45" />
-          <folding>
-            <element signature="e#35#140#0" expanded="true" />
+            <element signature="e#40#51#0" expanded="true" />
           </folding>
         </state>
       </provider>
